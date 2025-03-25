@@ -1,15 +1,16 @@
 'use client'
+import { Act } from "@/interfaces/aliases";
 import { TUser } from "@/interfaces/TUser";
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 import { useState } from "react";
 
 type TProps = {
-    users: TUser[]
+    users: TUser[],
+    current_user: TUser | undefined,
+    setCurrentUser: Act<TUser | undefined>;
 }
 
-export default function UserSelector({ users }: TProps) {
-    const [currentUser, setCurrentUser] = useState(users[0]);
-
+export default function GroupList({ users, current_user, setCurrentUser }: TProps) {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selected_user = users.find(u => u.id === (event.target as HTMLInputElement).value);
         console.log(selected_user)
@@ -27,7 +28,7 @@ export default function UserSelector({ users }: TProps) {
                     onChange={handleChange}
                 >
                     {users.map((user) => (
-                        <FormControlLabel value={user.id} control={<Radio />} label={user.name} />
+                        <FormControlLabel key={user.id} value={user.id} control={<Radio />} label={user.name} />
                     ))}
                 </RadioGroup>
             </FormControl>
