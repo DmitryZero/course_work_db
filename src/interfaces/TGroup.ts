@@ -3,6 +3,6 @@ import { TUser } from "./TUser";
 export type TGroup = {
     id: string,
     name: string,
-    children_groups?: TGroup[],
+    parent_group?: TGroup,
     users?: TUser[]
 };

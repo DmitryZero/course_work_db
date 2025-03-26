@@ -1,37 +1,25 @@
 'use client'
 import { Act } from "@/interfaces/aliases";
+import { TElement } from "@/interfaces/TElement";
 import { TUser } from "@/interfaces/TUser";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Button, Collapse, FormControl, FormControlLabel, FormGroup, FormLabel, Paper, Radio, RadioGroup, TextField } from "@mui/material";
 import { useState } from "react";
+import GroupSelector from "./GroupSelector";
+import { TGroup } from "@/interfaces/TGroup";
+import ElementItem from "./ElementItem";
+import { useDataContextHook } from "@/contexts/AppDataContext";
+import GroupItem from "./GroupItem";
 
-type TProps = {
-    users: TUser[],
-    current_user: TUser | undefined,
-    setCurrentUser: Act<TUser | undefined>;
-}
 
-export default function GroupList({ users, current_user, setCurrentUser }: TProps) {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selected_user = users.find(u => u.id === (event.target as HTMLInputElement).value);
-        console.log(selected_user)
-        setCurrentUser(selected_user!);
-    };
+export default function GroupList() {
+    const { groups } = useDataContextHook();
 
     return (
-        <div className="border-1 border-b-amber-900 p-2 rounded-2xl">
-            <FormControl className="">
-                <FormLabel id="demo-radio-buttons-group-label">Текущий пользователь</FormLabel>
-                <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="1"
-                    name="radio-buttons-group"
-                    onChange={handleChange}
-                >
-                    {users.map((user) => (
-                        <FormControlLabel key={user.id} value={user.id} control={<Radio />} label={user.name} />
-                    ))}
-                </RadioGroup>
-            </FormControl>
-        </div>
+        <>
+            <h2 className="text-xl font-bold">Список групп</h2>
+            {groups.map((group) => (
+                <GroupItem key={group.id} group={group} />
+            ))}
+        </>
     );
 }

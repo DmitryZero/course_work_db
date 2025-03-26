@@ -8,17 +8,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { TGroup } from "@/interfaces/TGroup";
 import GroupSelector from "./GroupSelector";
 import { TUser } from "@/interfaces/TUser";
+import UserSelector from "./UserSelector";
 
-type TProps = {
-    current_users: TUser[];
-    groups: TGroup[]
-}
 
-export default function GroupCreator({ current_users, groups }: TProps) {
+export default function GroupCreator() {
     const [element, setElement] = useState<TGroup>({
         id: "",
         name: "",
-        children_groups: [],
+        parent_group: undefined,
         users: []
     });
 
@@ -26,7 +23,7 @@ export default function GroupCreator({ current_users, groups }: TProps) {
         setElement({ ...element, [e.target.name]: e.target.value });
     }
 
-    function handleCreate() {
+    function handleCreate() { 
         // setCurrentItems({ ...current_items,  });
     }
 
@@ -42,8 +39,9 @@ export default function GroupCreator({ current_users, groups }: TProps) {
                 onChange={handleChange}
             />
             <FormGroup sx={{ mt: 2, "& > *": { mt: 2 } }}>
-                <GroupSelector groups={groups} field_name="Родитель" chooseGroup={(g) => g} />
+                <GroupSelector field_name="Родитель" chooseGroup={(g) => g} />
             </FormGroup>
+            <UserSelector />
             <Button sx={{ mt: 2 }} onClick={handleCreate} variant="contained" color="primary">
                 Создать
             </Button>

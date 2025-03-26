@@ -2,36 +2,30 @@
 import { Act } from "@/interfaces/aliases";
 import { TGroup } from "@/interfaces/TGroup";
 import { TUser } from "@/interfaces/TUser";
-import { Autocomplete, Box, Checkbox, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, TextField } from "@mui/material";
+import { Autocomplete, Box, Checkbox, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, OutlinedInput, Radio, RadioGroup, Select, SelectChangeEvent, TextField } from "@mui/material";
 import { useState } from "react";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { useDataContextHook } from "@/contexts/AppDataContext";
 
 type TProps = {
-    chooseGroup: (group: TGroup) => void
-    field_name: string,
-    is_read_only?: boolean,
-    initial_group?: TGroup | undefined
+    default_users?: TUser[] | undefined
+    // updateElementList: Act<TElement[]>
 }
 
-export default function GroupSelector({ chooseGroup, field_name, initial_group }: TProps) {
-    const { groups } = useDataContextHook();
-    const [current_group, setCurrentGroup] = useState<TGroup | undefined | null>(groups.find(g => g.id === initial_group?.id));
+export default function UserSelector({ default_users }: TProps) {
+    const [selected_users, setSelectedUsers] = useState<TUser[]>(default_users || []);
 
-    const handleChange = (event: SelectChangeEvent) => {
-        const selected_group = groups.find(g => g.id === (event.target.value as string));
-        setCurrentGroup(selected_group);
-        chooseGroup(selected_group!)
-    };
+    const { users } = useDataContextHook();
 
     const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
     const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
     return (
         <Autocomplete
-            options={groups}
-            value={current_group}
+            multiple
+            options={users}
+            value={selected_users}
             disableCloseOnSelect
             getOptionLabel={(option) => option.name}
             renderOption={(props, option, { selected }) => {
@@ -50,10 +44,10 @@ export default function GroupSelector({ chooseGroup, field_name, initial_group }
             }}
             style={{ width: 500 }}
             renderInput={(params) => (
-                <TextField {...params} label={field_name} />
+                <TextField sx={{ mt: 2 }} {...params} label="Пользователи" />
             )}
-            onChange={(event: any, newValue: TGroup | null) => {
-                setCurrentGroup(newValue);
+            onChange={(event: any, newValue: TUser[] | null) => {
+                setSelectedUsers(newValue || []);
             }}
             sx={{ mt: 2 }}
         />

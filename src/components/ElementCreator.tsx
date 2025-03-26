@@ -7,14 +7,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { TGroup } from "@/interfaces/TGroup";
 import GroupSelector from "./GroupSelector";
+import { useDataContextHook } from "@/contexts/AppDataContext";
 
-type TProps = {
-    current_items: TElement;
-    setCurrentItems: Act<TElement>;
-    groups: TGroup[]
-}
+export default function ElementCreator() {
+    const { groups } = useDataContextHook();
 
-export default function ElementCreator({ current_items, setCurrentItems, groups }: TProps) {
     const [element, setElement] = useState<TElement>({
         id: "",
         name: "",
