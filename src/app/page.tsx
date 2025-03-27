@@ -10,7 +10,7 @@ import MainPageWrapper from "@/wrappers/MainPageWrapper";
 
 export default function Home() {
   const users: TUser[] = [
-    { id: "1", name: "Admin - Никитин Дмитрий" },
+    { id: "1", name: "Admin - Никитин Дмитрий", is_admin: true },
     { id: "2", name: "Ложкин Ярослав" },
     { id: "3", name: "Смирнов Никита" },
     { id: "4", name: "Максимов Андрей" },

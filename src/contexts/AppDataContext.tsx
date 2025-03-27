@@ -6,13 +6,15 @@ import React, { createContext, useContext, useState } from "react";
 // Создаём тип для контекста
 interface DataContext {
     users: TUser[],
+    current_user: TUser | undefined,
     groups: TGroup[],
     elements: TElement[],
     createGroup: (group: TGroup) => void,
     updateGroup: (group: TGroup) => void,
     createElement: (element: TElement) => void,
     updateElement: (element: TElement) => void,
-}
+    setCurrentUser: (user: TUser | undefined) => void,
+} 
 // Создаём сам контекст
 const AppDataContext = createContext<DataContext | undefined>(undefined);
 
@@ -21,6 +23,7 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode, initialData?
     const [users, setUsers] = useState<TUser[]>(initialData?.users || []);
     const [groups, setGroups] = useState<TUser[]>(initialData?.groups || []);
     const [elements, setElements] = useState<TElement[]>(initialData?.elements || []);
+    const [current_user, setCurrentUser] = useState<TUser | undefined>(initialData?.current_user);
 
     const createGroup = (group: TGroup) => {
         setGroups((prevGroups) => [...prevGroups, group]);
@@ -42,8 +45,12 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode, initialData?
         );
     }
 
+    const updateCurrentUser = (user: TUser | undefined) => {
+        setCurrentUser(user);
+    }
+
     return (
-        <AppDataContext.Provider value={{ users, groups, elements, createGroup, updateGroup, createElement, updateElement }}>
+        <AppDataContext.Provider value={{ users, current_user, groups, elements, createGroup, updateGroup, createElement, updateElement, setCurrentUser }}>
             {children}
         </AppDataContext.Provider>
     );

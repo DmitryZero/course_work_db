@@ -7,11 +7,12 @@ import { useState } from "react";
 
 
 export default function CurrentUserSelector() {
-    const {users} = useDataContextHook();
+    const { users, current_user, setCurrentUser } = useDataContextHook();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selected_user = users.find(u => u.id === (event.target as HTMLInputElement).value);
-        console.log(selected_user)
+        setCurrentUser(selected_user)
+        // console.log(selected_user)
         // setCurrentUser(selected_user!);
     };
 
@@ -21,9 +22,9 @@ export default function CurrentUserSelector() {
                 <FormLabel id="demo-radio-buttons-group-label">Текущий пользователь</FormLabel>
                 <RadioGroup
                     aria-labelledby="demo-radio-buttons-group-label"
-                    defaultValue="1"
                     name="radio-buttons-group"
                     onChange={handleChange}
+                    value={current_user?.id}
                 >
                     {users.map((user) => (
                         <FormControlLabel key={user.id} value={user.id} control={<Radio />} label={user.name} />

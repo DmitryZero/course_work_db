@@ -12,7 +12,8 @@ import GroupItem from "./GroupItem";
 
 
 export default function GroupList() {
-    const { groups } = useDataContextHook();
+    const { groups, current_user } = useDataContextHook();
+    if (!current_user?.is_admin) return;
 
     return (
         <>

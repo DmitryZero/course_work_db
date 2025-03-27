@@ -27,13 +27,10 @@ interface DataContext {
 }
 
 export default function MainPageWrapper({ users, elements, groups }: TProps) {
-    const [current_user, setCurrentUser] = useState<TUser | undefined>(users[0]);
-    const [current_items, setCurrentItems] = useState<TElement>(elements[0]);
-
     const CounterContext = createContext<DataContext | undefined>(undefined);
 
     return (
-        <AppDataProvider initialData={{ users, elements, groups }}>
+        <AppDataProvider initialData={{ users, elements, groups, current_user: users[0] }}>
             <div className="p-4 space-y-4">
                 <h1 className="text-xl font-bold">Управление правами</h1>
                 <CurrentUserSelector />
