@@ -17,11 +17,11 @@ type TProps = {
 
 export default function GroupSelector({ chooseGroup, field_name, initial_group, is_read_only }: TProps) {
     const { groups } = useDataContextHook();
-    const [current_group, setCurrentGroup] = useState<TGroup | undefined | null>(groups.find(g => g.id === initial_group?.id));
+    const [current_group, setCurrentGroup] = useState<TGroup | null>(groups.find(g => g.id === initial_group?.id) || null);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selected_group = groups.find(g => g.id === (event.target.value as string));
-        setCurrentGroup(selected_group);
+        setCurrentGroup(selected_group || null);
         chooseGroup(selected_group!)
     };
 

@@ -14,7 +14,7 @@ type TProps = {
 }
 
 export default function ElementList({ is_readonly }: TProps) {
-    const { elements } = useDataContextHook();
+    const { elements, current_groups, current_user } = useDataContextHook();
 
     return (
         <>

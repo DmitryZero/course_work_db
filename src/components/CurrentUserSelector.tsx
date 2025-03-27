@@ -2,35 +2,46 @@
 import { useDataContextHook } from "@/contexts/AppDataContext";
 import { Act } from "@/interfaces/aliases";
 import { TUser } from "@/interfaces/TUser";
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Autocomplete, Checkbox, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { useState } from "react";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 
 export default function CurrentUserSelector() {
     const { users, current_user, updateCurrentUser } = useDataContextHook();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selected_user = users.find(u => u.id === (event.target as HTMLInputElement).value);
-        updateCurrentUser(selected_user)
-        // console.log(selected_user)
-        // setCurrentUser(selected_user!);
-    };
+    const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+    const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
     return (
-        <div className="border-1 border-b-amber-900 p-2 rounded-2xl">
-            <FormControl className="">
-                <FormLabel id="demo-radio-buttons-group-label">Текущий пользователь</FormLabel>
-                <RadioGroup
-                    aria-labelledby="demo-radio-buttons-group-label"
-                    name="radio-buttons-group"
-                    onChange={handleChange}
-                    value={current_user?.id}
-                >
-                    {users.map((user) => (
-                        <FormControlLabel key={user.id} value={user.id} control={<Radio />} label={user.name} />
-                    ))}
-                </RadioGroup>
-            </FormControl>
-        </div>
+        <Autocomplete
+            options={users}
+            value={current_user}
+            disableCloseOnSelect
+            getOptionLabel={(option) => option.name}
+            renderOption={(props, option, { selected }) => {
+                const { key, ...optionProps } = props;
+                return (
+                    <li key={key} {...optionProps}>
+                        <Checkbox
+                            icon={icon}
+                            checkedIcon={checkedIcon}
+                            style={{ marginRight: 8 }}
+                            checked={selected}
+                        />
+                        {option.name}
+                    </li>
+                );
+            }}
+            style={{ width: 500 }}
+            renderInput={(params) => (
+                <TextField {...params} label={"Текущий пользователь"} />
+            )}
+            onChange={(event: any, newValue: TUser | null) => {
+                updateCurrentUser(newValue);
+            }}
+            sx={{ mt: 2 }}
+        />
     );
 }

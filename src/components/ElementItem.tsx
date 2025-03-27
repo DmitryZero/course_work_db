@@ -11,11 +11,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 type TProps = {
     element: TElement,
+    current_user_groups?: TGroup[]
+    current_user?: TUser | undefined,
     is_readonly?: boolean
     // updateElementList: Act<TElement[]>
 }
 
-export default function ElementItem({ element, is_readonly }: TProps) {
+export default function ElementItem({ element, is_readonly, current_user_groups, current_user }: TProps) {
     const [is_open, setOpenElements] = useState<boolean>(false);
 
     const toggleElement = (id: string) => {
@@ -37,7 +39,7 @@ export default function ElementItem({ element, is_readonly }: TProps) {
             },
         }));
     }
-
+    
     return (
         <>
             <Paper className="p-4" sx={{ mt: 2 }}>
@@ -88,7 +90,7 @@ export default function ElementItem({ element, is_readonly }: TProps) {
                         variant={is_readonly ? "filled" : "outlined"}
                     />
                     <FormGroup sx={{ mt: 2, "& > *": { mt: 2 } }}>
-                        <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.read} field_name="Чтение" chooseGroup={(g) => handlePermissionChange("read", g)}  />
+                        <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.read} field_name="Чтение" chooseGroup={(g) => handlePermissionChange("read", g)} />
                         <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.write} field_name="Редактирование" chooseGroup={(g) => handlePermissionChange("write", g)} />
                         <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.delete} field_name="Удаление" chooseGroup={(g) => handlePermissionChange("delete", g)} />
                     </FormGroup>

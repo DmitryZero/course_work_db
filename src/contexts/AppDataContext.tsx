@@ -1,19 +1,20 @@
 import { TElement } from "@/interfaces/TElement";
 import { TGroup } from "@/interfaces/TGroup";
 import { TUser } from "@/interfaces/TUser";
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Создаём тип для контекста
 interface DataContext {
     users: TUser[],
-    current_user: TUser | undefined,
+    current_user: TUser | null,
     groups: TGroup[],
+    current_groups: TGroup[],
     elements: TElement[],
     createGroup: (group: TGroup) => void,
     updateGroup: (group: TGroup) => void,
     createElement: (element: TElement) => void,
     updateElement: (element: TElement) => void,
-    updateCurrentUser: (user: TUser | undefined) => void,
+    updateCurrentUser: (user: TUser | null) => void,
 }
 // Создаём сам контекст
 const AppDataContext = createContext<DataContext | undefined>(undefined);
@@ -23,7 +24,8 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode, initialData?
     const [users, setUsers] = useState<TUser[]>(initialData?.users || []);
     const [groups, setGroups] = useState<TUser[]>(initialData?.groups || []);
     const [elements, setElements] = useState<TElement[]>(initialData?.elements || []);
-    const [current_user, setCurrentUser] = useState<TUser | undefined>(initialData?.current_user);
+    const [current_user, setCurrentUser] = useState<TUser | null>(initialData?.current_user || null);
+    const [current_groups, setCurrentGroups] = useState<TGroup[]>(initialData?.current_groups || []);
 
     const createGroup = (group: TGroup) => {
         setGroups((prevGroups) => [...prevGroups, group]);
@@ -45,12 +47,16 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode, initialData?
         );
     }
 
-    const updateCurrentUser = (user: TUser | undefined) => {
+    const updateCurrentUser = (user: TUser | null) => {
         setCurrentUser(user);
     }
 
+    useEffect(() => {
+        console.log("🔄 AppDataContext ререндерится!");
+    });
+
     return (
-        <AppDataContext.Provider value={{ users, current_user, groups, elements, createGroup, updateGroup, createElement, updateElement, updateCurrentUser }}>
+        <AppDataContext.Provider value={{ users, current_user, groups, current_groups, elements, createGroup, updateGroup, createElement, updateElement, updateCurrentUser }}>
             {children}
         </AppDataContext.Provider>
     );

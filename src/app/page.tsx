@@ -21,8 +21,6 @@ export default function Home() {
     {id: "2", name: "Группа 2"},
   ];
 
-  groups[0].parent_group = groups[1];
-
   const items: TElement[] = [
     { id: "1", name: "Test 1", description: "Test 1_", permissions: {read: groups[0], write: groups[1]}},
     { id: "2", name: "Test 2", description: "Test 2_", permissions: {}},
@@ -30,6 +28,9 @@ export default function Home() {
     { id: "4", name: "Test 4", description: "Test 4_", permissions: {}},
     { id: "5", name: "Test 5", description: "Test 5_", permissions: {}},
   ];
+
+  groups[0].parent_group = groups[1];
+  users[0].user_groups = [groups[1]];
 
   return (
     <div className="p-4 space-y-4">
