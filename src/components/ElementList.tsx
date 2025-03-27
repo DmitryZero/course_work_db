@@ -9,15 +9,17 @@ import { TGroup } from "@/interfaces/TGroup";
 import ElementItem from "./ElementItem";
 import { useDataContextHook } from "@/contexts/AppDataContext";
 
+type TProps = {
+    is_readonly?: boolean;
+}
 
-export default function ElementList() {
+export default function ElementList({ is_readonly }: TProps) {
     const { elements } = useDataContextHook();
 
     return (
         <>
-            <h2 className="text-xl font-bold">Список элементов</h2>
             {elements.map((element) => (
-                <ElementItem key={element.id} element={element} />
+                <ElementItem key={element.id} element={element} is_readonly={is_readonly} />
             ))}
         </>
     );

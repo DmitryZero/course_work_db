@@ -2,12 +2,14 @@
 import { Act } from "@/interfaces/aliases";
 import { TElement } from "@/interfaces/TElement";
 import { TUser } from "@/interfaces/TUser";
-import { Button, Collapse, FormControl, FormControlLabel, FormGroup, FormLabel, Paper, Radio, RadioGroup, TextField } from "@mui/material";
+import { Button, Collapse, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Paper, Radio, RadioGroup, TextField } from "@mui/material";
 import { useState } from "react";
 import GroupSelector from "./GroupSelector";
 import { TGroup } from "@/interfaces/TGroup";
 import { useDataContextHook } from "@/contexts/AppDataContext";
 import UserSelector from "./UserSelector";
+import DeleteIcon from '@mui/icons-material/Delete';
+import ElementList from "./ElementList";
 
 type TProps = {
     group: TGroup
@@ -15,11 +17,10 @@ type TProps = {
 }
 
 export default function GroupItem({ group }: TProps) {
-    const [is_open, setOpenElements] = useState<boolean>(false);
-
-    const toggleElement = (id: string) => {
-        setOpenElements((prev) => !prev);
-    };
+    const [is_open, setOpenGroup] = useState<boolean>(false);
+    const [is_open_read, setOpenRead] = useState<boolean>(false);
+    const [is_open_write, setOpenWrite] = useState<boolean>(false);
+    const [is_open_delete, setOpenDelete] = useState<boolean>(false);
 
     const [currrent_group, setCurrentGroup] = useState<TGroup>(group);
 
@@ -35,10 +36,13 @@ export default function GroupItem({ group }: TProps) {
                     <Button
                         sx={{ ml: 2 }}
                         size="small"
-                        onClick={() => toggleElement(currrent_group.id)}
+                        onClick={() => setOpenGroup(!is_open)}
                     >
                         {is_open ? "Скрыть" : "Развернуть"}
                     </Button>
+                    <IconButton aria-label="delete">
+                        <DeleteIcon />
+                    </IconButton>
                 </h3>
 
                 <Collapse in={is_open}>
@@ -52,6 +56,37 @@ export default function GroupItem({ group }: TProps) {
                     />
                     <UserSelector default_users={group.users} />
                     <GroupSelector initial_group={group.parent_group} field_name="Родительская группа" chooseGroup={(g) => g} />
+
+                    <h3 className="font-bold mt-2">
+                        Чтение
+                        <Button size="small" onClick={() => setOpenRead(!is_open_read)} sx={{ ml: 2 }}>
+                            {is_open_read ? "Скрыть" : "Развернуть"}
+                        </Button>
+                    </h3>
+                    <Collapse in={is_open_read}>
+                        <ElementList is_readonly={true} />
+                    </Collapse>
+
+                    <h3 className="font-bold mt-2">
+                        Редактирование
+                        <Button size="small" onClick={() => setOpenWrite(!is_open_write)} sx={{ ml: 2 }}>
+                            {is_open_write ? "Скрыть" : "Развернуть"}
+                        </Button>
+                    </h3>
+                    <Collapse in={is_open_write}>
+                        <ElementList is_readonly={true} />
+                    </Collapse>
+
+                    <h3 className="font-bold mt-2">
+                        Удаление
+                        <Button size="small" onClick={() => setOpenDelete(!is_open_delete)} sx={{ ml: 2 }}>
+                            {is_open_delete ? "Скрыть" : "Развернуть"}
+                        </Button>
+                    </h3>
+                    <Collapse in={is_open_delete}>
+                        <ElementList is_readonly={true} />
+                    </Collapse>
+
                     <Button sx={{ mt: 2 }} variant="contained" color="primary">
                         Обновить
                     </Button>

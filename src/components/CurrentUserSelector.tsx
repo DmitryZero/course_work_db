@@ -7,11 +7,11 @@ import { useState } from "react";
 
 
 export default function CurrentUserSelector() {
-    const { users, current_user, setCurrentUser } = useDataContextHook();
+    const { users, current_user, updateCurrentUser } = useDataContextHook();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selected_user = users.find(u => u.id === (event.target as HTMLInputElement).value);
-        setCurrentUser(selected_user)
+        updateCurrentUser(selected_user)
         // console.log(selected_user)
         // setCurrentUser(selected_user!);
     };

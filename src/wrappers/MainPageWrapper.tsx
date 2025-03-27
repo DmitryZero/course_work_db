@@ -35,6 +35,7 @@ export default function MainPageWrapper({ users, elements, groups }: TProps) {
                 <h1 className="text-xl font-bold">Управление правами</h1>
                 <CurrentUserSelector />
                 <ElementCreator />
+                <h2 className="text-xl font-bold">Список элементов</h2>
                 <ElementList />
                 <GroupCreator />
                 <GroupList />

@@ -26,6 +26,9 @@ export default function Home() {
   const items: TElement[] = [
     { id: "1", name: "Test 1", description: "Test 1_", permissions: {read: groups[0], write: groups[1]}},
     { id: "2", name: "Test 2", description: "Test 2_", permissions: {}},
+    { id: "3", name: "Test 3", description: "Test 3_", permissions: {}},
+    { id: "4", name: "Test 4", description: "Test 4_", permissions: {}},
+    { id: "5", name: "Test 5", description: "Test 5_", permissions: {}},
   ];
 
   return (

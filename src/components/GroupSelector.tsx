@@ -15,7 +15,7 @@ type TProps = {
     initial_group?: TGroup | undefined
 }
 
-export default function GroupSelector({ chooseGroup, field_name, initial_group }: TProps) {
+export default function GroupSelector({ chooseGroup, field_name, initial_group, is_read_only }: TProps) {
     const { groups } = useDataContextHook();
     const [current_group, setCurrentGroup] = useState<TGroup | undefined | null>(groups.find(g => g.id === initial_group?.id));
 
@@ -56,6 +56,8 @@ export default function GroupSelector({ chooseGroup, field_name, initial_group }
                 setCurrentGroup(newValue);
             }}
             sx={{ mt: 2 }}
+            readOnly={is_read_only}
+            disabled={is_read_only}
         />
     );
 }

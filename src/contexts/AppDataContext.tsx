@@ -13,8 +13,8 @@ interface DataContext {
     updateGroup: (group: TGroup) => void,
     createElement: (element: TElement) => void,
     updateElement: (element: TElement) => void,
-    setCurrentUser: (user: TUser | undefined) => void,
-} 
+    updateCurrentUser: (user: TUser | undefined) => void,
+}
 // Создаём сам контекст
 const AppDataContext = createContext<DataContext | undefined>(undefined);
 
@@ -50,7 +50,7 @@ export const AppDataProvider: React.FC<{ children: React.ReactNode, initialData?
     }
 
     return (
-        <AppDataContext.Provider value={{ users, current_user, groups, elements, createGroup, updateGroup, createElement, updateElement, setCurrentUser }}>
+        <AppDataContext.Provider value={{ users, current_user, groups, elements, createGroup, updateGroup, createElement, updateElement, updateCurrentUser }}>
             {children}
         </AppDataContext.Provider>
     );

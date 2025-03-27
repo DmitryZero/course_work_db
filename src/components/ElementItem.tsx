@@ -2,18 +2,20 @@
 import { Act } from "@/interfaces/aliases";
 import { TElement } from "@/interfaces/TElement";
 import { TUser } from "@/interfaces/TUser";
-import { Button, Collapse, FormControl, FormControlLabel, FormGroup, FormLabel, Paper, Radio, RadioGroup, TextField } from "@mui/material";
+import { Button, Collapse, FormControl, FormControlLabel, FormGroup, FormLabel, IconButton, Paper, Radio, RadioGroup, TextField } from "@mui/material";
 import { useState } from "react";
 import GroupSelector from "./GroupSelector";
 import { TGroup } from "@/interfaces/TGroup";
 import { useDataContextHook } from "@/contexts/AppDataContext";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 type TProps = {
-    element: TElement
+    element: TElement,
+    is_readonly?: boolean
     // updateElementList: Act<TElement[]>
 }
 
-export default function ElementItem({ element }: TProps) {
+export default function ElementItem({ element, is_readonly }: TProps) {
     const [is_open, setOpenElements] = useState<boolean>(false);
 
     const toggleElement = (id: string) => {
@@ -38,7 +40,7 @@ export default function ElementItem({ element }: TProps) {
 
     return (
         <>
-            <Paper className="p-4">
+            <Paper className="p-4" sx={{ mt: 2 }}>
                 <h3 className="font-semibold">
                     {currrent_element.name}
                     <Button
@@ -48,6 +50,12 @@ export default function ElementItem({ element }: TProps) {
                     >
                         {is_open ? "Скрыть" : "Развернуть"}
                     </Button>
+                    {
+                        !is_readonly &&
+                        <IconButton aria-label="delete">
+                            <DeleteIcon />
+                        </IconButton>
+                    }
                 </h3>
 
                 <Collapse in={is_open}>
@@ -58,6 +66,12 @@ export default function ElementItem({ element }: TProps) {
                         fullWidth
                         sx={{ mt: 2 }}
                         onChange={handleChange}
+                        slotProps={{
+                            input: {
+                                readOnly: is_readonly,
+                            },
+                        }}
+                        variant={is_readonly ? "filled" : "outlined"}
                     />
                     <TextField
                         label="Описание"
@@ -66,11 +80,17 @@ export default function ElementItem({ element }: TProps) {
                         fullWidth
                         sx={{ mt: 2 }}
                         onChange={handleChange}
+                        slotProps={{
+                            input: {
+                                readOnly: is_readonly,
+                            },
+                        }}
+                        variant={is_readonly ? "filled" : "outlined"}
                     />
                     <FormGroup sx={{ mt: 2, "& > *": { mt: 2 } }}>
-                        <GroupSelector initial_group={currrent_element.permissions.read} field_name="Чтение" chooseGroup={(g) => handlePermissionChange("read", g)} />
-                        <GroupSelector initial_group={currrent_element.permissions.write} field_name="Редактирование" chooseGroup={(g) => handlePermissionChange("write", g)} />
-                        <GroupSelector initial_group={currrent_element.permissions.delete} field_name="Удаление" chooseGroup={(g) => handlePermissionChange("delete", g)} />
+                        <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.read} field_name="Чтение" chooseGroup={(g) => handlePermissionChange("read", g)}  />
+                        <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.write} field_name="Редактирование" chooseGroup={(g) => handlePermissionChange("write", g)} />
+                        <GroupSelector is_read_only={is_readonly} initial_group={currrent_element.permissions.delete} field_name="Удаление" chooseGroup={(g) => handlePermissionChange("delete", g)} />
                     </FormGroup>
                     <Button sx={{ mt: 2 }} variant="contained" color="primary">
                         Обновить
